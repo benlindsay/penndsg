@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<p>
+  <a href="{% url 'account:detail' %}">Account</a>
+</p>
+<p>
+  <a href="{% url 'events:index' %}">Events</a>
+</p>
+{% endblock %}
