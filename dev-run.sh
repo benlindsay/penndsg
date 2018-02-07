@@ -13,7 +13,13 @@ if [ $(docker-machine ls -q | grep '^penndsgdev$') ]; then
   docker-compose build
   docker-compose up -d
 else
-  docker-machine create --driver virtualbox penndsgdev
+  if [ $(uname -s) == 'Darwin' ]; then
+    # virtualbox driver for Macs
+    docker-machine create --driver virtualbox penndsgdev
+  else
+    # hyperv driver for windows
+    docker-machine create --driver hyperv penndsgdev
+  fi
   eval $(docker-machine env penndsgdev)
   docker-compose build
   docker-compose up -d
