@@ -7,6 +7,25 @@ from django.utils.translation import gettext_lazy as _
 import markdown2
 
 
+def event_directory_path(instance, filename):
+    """
+    Returns path to which uploaded event image file will be saved.
+    See https://docs.djangoproject.com/en/2.0/ref/models/fields/ +
+    #django.db.models.FileField.upload_to for more details
+    """
+    # file will be uploaded to MEDIA_ROOT/event_<id>/image.<filename_ext>
+    if filename.count('.') > 0:
+        ext = filename.split('.')[-1]
+    else:
+        raise ValueError('filename {} has no extension!'.format(filename))
+    new_filename = '.'.join(['image', ext])
+    try:
+        event_id = instance.id
+    except:
+        raise ValueError('No event found')
+    return 'event_{:04d}/{}'.format(instance.id, new_filename)
+
+
 class Event(models.Model):
     title = models.CharField(max_length=200)
     start_time = models.DateTimeField('start time')
@@ -15,6 +34,9 @@ class Event(models.Model):
     location = models.CharField(max_length=200)
     details_markdown = models.TextField('markdown details')
     details_html = models.TextField('html details', editable=False)
+    image = models.FileField(
+        upload_to=event_directory_path, null=True, blank=True
+    )
 
     def clean(self, *args, **kwargs):
         """

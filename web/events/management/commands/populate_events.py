@@ -1,12 +1,19 @@
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
+from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.utils import timezone
+from os.path import abspath
+from os.path import dirname
+from os.path import join
 import pytz
 
 from events.models import Event
+from events.models import event_directory_path
 
 EST = pytz.timezone('US/Eastern')
+EVENT_FILES_PATH = join(dirname(abspath(__file__)), 'event_files')
+
 
 class Command(BaseCommand):
     args = ''
@@ -34,8 +41,27 @@ file.
 - [PDF File](http://penndsg.com/slides/2017-01-26-info-session-slides.pdf)
             """
         )
-        if not Event.objects.filter(title=info_session_1.title).exists():
+        # based on suggestion in comments of
+        # https://stackoverflow.com/a/3090342/2680824
+        existing_info_session_1 = (
+            Event.objects.filter(title=info_session_1.title).first()
+        )
+        if existing_info_session_1 is None:
+            print("Adding Spring 2017 Info Session")
             info_session_1.save()
+        else:
+            print("Spring 2017 Info Session already added.")
+            info_session_1 = existing_info_session_1
+        image_path = join(
+            EVENT_FILES_PATH, '2017-01-26-info-session', 'image.png'
+        )
+        # Modified from https://stackoverflow.com/a/1993971/2680824
+        with open(image_path, 'rb') as f:
+            image_file = File(f)
+            new_path = event_directory_path(info_session_1, image_path)
+            info_session_1.image.save(new_path, image_file)
+        print("Uploading image for Spring 2017 Info Session")
+        info_session_1.save()
 
     def handle(self, *args, **options):
         self._create_events()
