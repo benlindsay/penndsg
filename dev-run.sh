@@ -10,6 +10,9 @@ if [ $(docker-machine ls -q | grep '^penndsgdev$') ]; then
   echo "Skipping 'docker-machine create' and 'django-init.sh' commands."
   docker-machine start penndsgdev
   eval $(docker-machine env penndsgdev)
+  fresh_build=false
+  docker image inspect penndsg_web || \
+    fresh_build=true
   docker-compose build
   docker-compose up -d
 else
@@ -21,9 +24,13 @@ else
     docker-machine create --driver hyperv penndsgdev
   fi
   eval $(docker-machine env penndsgdev)
+  fresh_build=true
   docker-compose build
   docker-compose up -d
-  docker exec -it penndsg_web_1 bash django-init.sh
+fi
+
+if $fresh_build; then
+  docker-compose run --service-ports -v $(pwd)/web:/usr/src/app web bash django-init.sh
 fi
 
 echo "Navigate to $(docker-machine ip penndsgdev) in your browser."
