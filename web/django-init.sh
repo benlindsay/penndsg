@@ -9,12 +9,14 @@ echo "Running makemigrations on events app:"
 python manage.py makemigrations events
 echo "Running migrate:"
 python manage.py migrate
+echo "Creating superuser account:"
+python manage.py createsuperuser
 echo "Populating school choices for profiles:"
 python manage.py populate_schools
 echo "Populating degree choices for profiles:"
 python manage.py populate_degrees
-echo "Creating superuser account:"
-python manage.py createsuperuser
+echo "Populating previous events:"
+python manage.py populate_events
 echo "Collecting static files:"
 python manage.py collectstatic
 
