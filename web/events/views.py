@@ -55,7 +55,7 @@ class EventDetailView(generic.DetailView):
             timedelta(hours=EVENTS_SIGNIN_HOURS_BEFORE)
         )
         signin_end_time = (
-            context['event'].end_time +
+            context['event'].start_time + context['event'].duration +
             timedelta(hours=EVENTS_SIGNIN_HOURS_AFTER)
         )
         now = timezone.now()

@@ -16,8 +16,8 @@ class EventTests(TestCase):
         self.event = Event(
             title='Awesome Event',
             start_time=timezone.now(),
-            end_time=timezone.now() + timedelta(hours=1),
-            pub_date=timezone.now()
+            duration=timedelta(hours=1),
+            pub_date=timezone.now(),
         )
         self.event.save()
 
@@ -26,14 +26,14 @@ class EventTests(TestCase):
         self.user.save()
 
 
-    def test_event_creation_with_end_before_start_fails(self):
+    def test_event_creation_with_negative_duration_fails(self):
         self.assertRaises(
             ValidationError,
             Event(
                 title='Bad Event',
                 start_time=timezone.now(),
-                end_time=timezone.now() - timedelta(minutes=1),
-                pub_date=timezone.now()
+                duration=timedelta(hours=-1),
+                pub_date=timezone.now(),
             ).save
         )
 
@@ -46,7 +46,7 @@ class EventTests(TestCase):
             Rsvp(
                 event=self.event,
                 user=self.user,
-                rsvp_date=timezone.now()
+                rsvp_date=timezone.now(),
             ).save
         )
 
