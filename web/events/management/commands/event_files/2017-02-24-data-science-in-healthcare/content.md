@@ -6,7 +6,7 @@ location: Law Auditorium, Jordan Medical Education Center, 3400 Civic Center Blv
 ---
 Have you ever wondered how data analytics can improve healthcare? Come meet data scientists from the Penn Medicine Predictive Healthcare team, developers of the award-winning Penn Signals platform, and learn how their work helps improve patient health and wellness. The Penn Medicine Predictive Healthcare team will give a talk at 4:00. We will hold a reception with light catered food outside the auditorium afterwards.
 
-Agenda:
+**Agenda:**
 
 4:00 - 4:45 PM -- Speakers Michael Draugelis, Michael Becker, and Thaibinh Luong discuss their work. See their profiles [here](http://www.med.upenn.edu/predictivehealthcare/personnel.html)
 
