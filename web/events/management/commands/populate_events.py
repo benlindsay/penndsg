@@ -43,7 +43,7 @@ class Command(BaseCommand):
         # https://stackoverflow.com/a/3090342/2680824
         event = Event.objects.filter(title=data_dict['title']).first()
         if event is None:
-            # create event if it doesn't exits yet
+            # create event if it doesn't exist yet
             print('Creating {} event'.format(data_dict['title']))
             event = Event(
                 title=data_dict['title'],
@@ -63,14 +63,22 @@ class Command(BaseCommand):
             event.save()
         else:
             print("{} already exists.".format(data_dict['title']))
-        image_path = join(event_dir, 'image.png')
-        # Modified from https://stackoverflow.com/a/1993971/2680824
-        with open(image_path, 'rb') as f:
-            image_file = File(f)
-            new_path = event_directory_path(event, image_path)
-            event.image.save(new_path, image_file)
-        print("Uploading image for {}".format(data_dict['title']))
-        event.save()
+        # Find event image (image.<extension>) in event folder
+        image_glob = glob(join(event_dir, 'image.*'))
+        if len(image_glob) == 0:
+            print("No images found in {}".format(event_dir))
+        elif len(image_glob) > 1:
+            msg = "Multiple images found in {}. Delete unwanted ones."
+            print(msg.format(event_dir))
+        else:
+            image_path = image_glob[0]
+            # Modified from https://stackoverflow.com/a/1993971/2680824
+            with open(image_path, 'rb') as f:
+                image_file = File(f)
+                new_path = event_directory_path(event, image_path)
+                event.image.save(new_path, image_file)
+            print("Uploading image for {}".format(data_dict['title']))
+            event.save()
 
     def handle(self, *args, **options):
         event_dirs = sorted(glob(join(EVENT_FILES_PATH, '*')))
