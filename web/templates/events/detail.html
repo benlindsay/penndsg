@@ -1,57 +1,15 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}{{ event.title }}{% endblock %}
 
-You're looking at Event {{ event.id }}.
-
 {% block content %}
-  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+  <p>{{ event.start_time }} - {{ event.end_time }}</p>
+  <p>{{ event.location }}</p>
 
-  {% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-      {{ message }}
-    </li>
-    {% endfor %}
-  </ul>
+  {{ event.details_html | safe }}
+
+  {% if show_rsvp_signin_widget %}
+    {% include "events/rsvp-signin-widget.html" %}
   {% endif %}
 
-  {% if signin_open %}
-  <form action="{% url 'events:signin' event.id %}" method="post">
-    {% csrf_token %}
-    <p>Email address:</p>
-    <input type="text" name="email" value="" />
-    <input type="submit" value="Signin" />
-  </form>
-  {% else %}
-  <form action="{% url 'events:rsvp' event.id %}" method="post">
-    {% csrf_token %}
-    <p>Email address:</p>
-    <input type="text" name="email" value="" />
-    <input type="submit" value="RSVP" />
-  </form>
-  {% endif %}
-
-  {% if request.user.is_authenticated %}
-    {% if signin_open %}
-      {% if signed_in_to_event %}
-  <p>
-    Signed in to this event with {{ request.user.email }}
-  </p>
-  <p>
-    Not you? <a href="{% url 'account:logout' %}">Logout</a>
-  </p>
-      {% endif %}
-    {% else  %}
-      {% if rsvped_to_event %}
-  <p>
-    RSVP'ed to this event with {{ request.user.email }}
-  </p>
-  <p>
-    Not you? <a href="{% url 'account:logout' %}">Logout</a>
-  </p>
-      {% endif %}
-    {% endif %}
-  {% endif %}
 {% endblock %}

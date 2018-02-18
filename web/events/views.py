@@ -50,20 +50,26 @@ class EventDetailView(generic.DetailView):
         # Add variable for whether the signin period is open for the event
         # By default the signin period goes from 1 hour before the event to 1
         # hour after
+        context['event'].end_time = (
+            context['event'].start_time + context['event'].duration
+        )
         signin_start_time = (
             context['event'].start_time -
             timedelta(hours=EVENTS_SIGNIN_HOURS_BEFORE)
         )
         signin_end_time = (
-            context['event'].start_time + context['event'].duration +
+            context['event'].end_time +
             timedelta(hours=EVENTS_SIGNIN_HOURS_AFTER)
         )
         now = timezone.now()
-        if now < signin_start_time or now > signin_end_time:
-            context['signin_open'] = False
+        if now > signin_end_time:
+            context['show_rsvp_signin_widget'] = False
         else:
-            context['signin_open'] = True
-
+            context['show_rsvp_signin_widget'] = True
+            if now > signin_start_time:
+                context['widget_mode'] = 'Signin'
+            else:
+                context['widget_mode'] = 'RSVP'
         return context
 
 

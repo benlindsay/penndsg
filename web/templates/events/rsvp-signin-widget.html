@@ -1,0 +1,51 @@
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if widget_mode == 'RSVP' %}
+<form action="{% url 'events:rsvp' event.id %}" method="post">
+  {% csrf_token %}
+  <p>Email address:</p>
+  <input type="text" name="email" value="" />
+  <input type="submit" value="RSVP" />
+</form>
+{% elif widget_mode == 'Signin' %}
+<form action="{% url 'events:signin' event.id %}" method="post">
+  {% csrf_token %}
+  <p>Email address:</p>
+  <input type="text" name="email" value="" />
+  <input type="submit" value="Signin" />
+</form>
+{% else %}
+<b>{{ widget_mode }} isn't an acceptable value for 'widget_mode'</b>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+  {% if signin_open %}
+    {% if signed_in_to_event %}
+<p>
+  Signed in to this event with {{ request.user.email }}
+</p>
+<p>
+  Not you? <a href="{% url 'account:logout' %}">Logout</a>
+</p>
+    {% endif %}
+  {% else  %}
+    {% if rsvped_to_event %}
+<p>
+  RSVP'ed to this event with {{ request.user.email }}
+</p>
+<p>
+  Not you? <a href="{% url 'account:logout' %}">Logout</a>
+</p>
+    {% endif %}
+  {% endif %}
+{% endif %}
