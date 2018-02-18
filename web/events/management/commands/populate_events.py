@@ -15,6 +15,7 @@ from events.models import Event
 from events.models import event_directory_path
 
 EST = pytz.timezone('US/Eastern')
+UTC = pytz.timezone('UTC')
 EVENT_FILES_PATH = join(dirname(abspath(__file__)), 'event_files')
 
 
@@ -45,16 +46,21 @@ class Command(BaseCommand):
         if event is None:
             # create event if it doesn't exist yet
             print('Creating {} event'.format(data_dict['title']))
+            # putting EST directly into start_time creation
+            # for some reason took 4 minutes off the time...
+            # https://stackoverflow.com/a/42101391/2680824
+            start_time = datetime(
+                year=year,
+                month=month,
+                day=day,
+                hour=time.hour,
+                minute=time.minute,
+                tzinfo=None,
+            )
+            start_time = start_time.astimezone(EST)
             event = Event(
                 title=data_dict['title'],
-                start_time=datetime(
-                    year=year,
-                    month=month,
-                    day=day,
-                    hour=time.hour,
-                    minute=time.minute,
-                    tzinfo=EST,
-                ),
+                start_time=start_time,
                 duration=duration,
                 pub_date=timezone.now(),
                 location=data_dict['location'],
