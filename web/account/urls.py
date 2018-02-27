@@ -1,10 +1,15 @@
-from django.conf.urls import include, url
-from django.contrib.auth.views import (
-    login, logout, password_reset, password_reset_done,
-    password_reset_confirm, password_reset_complete
-)
+from django.conf.urls import include
+from django.conf.urls import url
+from django.contrib.auth.views import login
+from django.contrib.auth.views import logout
+from django.contrib.auth.views import password_reset
+from django.contrib.auth.views import password_reset_confirm
+from django.contrib.auth.views import password_reset_complete
+from django.contrib.auth.views import password_reset_done
 
-from .views import profile_detail_view, edit_profile_view, download_resume
+from .views import download_resume
+from .views import edit_profile_view
+from .views import profile_detail_view
 
 app_name = 'account'
 urlpatterns = [
