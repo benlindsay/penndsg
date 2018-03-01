@@ -10,8 +10,7 @@ services:
       - postgres:postgres
       - redis:redis
     volumes:
-      - ./web:/usr/src/app
-      - ./web/static:/usr/src/app/static
+      - web-static:/usr/src/app/static
     env_file: .dev-env
     environment:
       DEBUG: 'true'
@@ -25,7 +24,7 @@ services:
       - "80:80"
     volumes:
       - /www/static
-      - ./web/static:/usr/src/app/static
+      - web-static:/usr/src/app/static
     links:
       - web:web
 
@@ -46,6 +45,6 @@ services:
       - redisdata:/data
 
 volumes:
-  # web-static:
+  web-static:
   pgdata:
   redisdata:
