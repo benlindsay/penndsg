@@ -1,10 +1,11 @@
 from datetime import timedelta
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 import markdown2
+
+from account.models import User
 
 
 def event_directory_path(instance, filename):
@@ -60,6 +61,9 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ('start_time',)
 
 
 class Rsvp(models.Model):

@@ -1,5 +1,4 @@
 from datetime import timedelta
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.test import TestCase
@@ -8,6 +7,7 @@ from django.utils import timezone
 from .models import Event
 from .models import Rsvp
 from .models import Signin
+from account.models import User
 
 
 class EventTests(TestCase):

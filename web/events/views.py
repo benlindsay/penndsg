@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -13,6 +12,7 @@ from datetime import timedelta
 from .models import Event
 from .models import Rsvp
 from .models import Signin
+from account.models import User
 from penndsg.settings import EVENTS_SIGNIN_HOURS_BEFORE
 from penndsg.settings import EVENTS_SIGNIN_HOURS_AFTER
 

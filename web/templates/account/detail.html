@@ -4,7 +4,7 @@
 
 {% block content %}
 <p>Name: {{ profile.full_name }}</p>
-<p>Email: {{ user.email }}</p>
+<p>Email: {{ profile.email }}</p>
 <p>Email confirmed: {{ profile.email_confirmed }}</p>
 <p>School(s): {% for school in profile.schools.all %}{{ school.name }}, {% endfor %}</p>
 <p>Degree(s) Seeking: {% for degree in profile.degrees.all %}{{ degree.name }}, {% endfor %}</p>
@@ -14,8 +14,8 @@
 <p>Resume: <a href="{% url 'account:download-resume' %}">Download</a></p>
 {% endif %}
 <p>
-  Profile viewable by companies:
-  {% if profile.viewable %}Yes{% else %}No{% endif %}
+  Profile searchable by companies:
+  {% if profile.searchable %}Yes{% else %}No{% endif %}
 </p>
 <p></p>
 <a class="btn btn-primary" href="{% url 'account:edit' %}" role="button">

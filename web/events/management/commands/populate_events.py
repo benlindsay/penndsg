@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -11,6 +10,7 @@ from os.path import join
 import pytz
 import yaml
 
+from account.models import User
 from events.models import Event
 from events.models import event_directory_path
 

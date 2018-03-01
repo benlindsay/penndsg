@@ -110,6 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#substituting-a-custom-user-model
+AUTH_USER_MODEL = 'account.User'
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'pdsg.noreply@gmail.com'

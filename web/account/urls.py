@@ -10,12 +10,14 @@ from django.contrib.auth.views import password_reset_done
 from .views import download_resume
 from .views import edit_profile_view
 from .views import profile_detail_view
+from .views import signup
 
 app_name = 'account'
 urlpatterns = [
     url(r'^$', profile_detail_view, name='detail'),
     url(r'^edit/$', edit_profile_view, name='edit'),
     url(r'^download-resume/$', download_resume, name='download-resume'),
+    url(r'^signup/$', signup, name='signup'),
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),
     url(r'^password-reset/$', password_reset,
