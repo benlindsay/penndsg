@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^events/', include('events.urls')),
     url(r'^account/', include('account.urls')),
+    url(r'^talentsearch/', include('talentsearch.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)

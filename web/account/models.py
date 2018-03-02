@@ -56,6 +56,12 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    def __str__(self):
+        try:
+            return self.profile.full_name
+        except:
+            return self.email
+
 
 class School(models.Model):
     name = models.CharField(max_length=50)
@@ -105,8 +111,17 @@ class Profile(models.Model):
     )
     searchable = models.BooleanField(default=False)
 
+    @property
     def full_name(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
+
+    @property
+    def all_schools(self):
+        return ', '.join([x.abbrev for x in self.schools.all()])
+
+    @property
+    def all_degrees(self):
+        return ', '.join([x.name for x in self.degrees.all()])
 
     # https://stackoverflow.com/a/3411411/2680824
     def email(self):
@@ -116,10 +131,4 @@ class Profile(models.Model):
         return os.path.basename(self.resume.name)
 
     def __str__(self):
-        try:
-            if self.full_name is not None:
-                return "{}'s profile".format(self.full_name)
-            else:
-                return "{}'s profile".format(self.user.username)
-        except:
-            return "{}'s profile".format(self.user.username)
+        return "{}'s profile".format(self.full_name)
