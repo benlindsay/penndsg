@@ -8,3 +8,4 @@ __pycache__
 .cache
 settings_secret.py
 db-backups/
+web/media
